@@ -74,7 +74,7 @@ jobs:
       connectedAppClientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
       connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
       runtime.key: ${{ secrets.RUNTIME_KEY }}
-      target: ${{ env.TARGET }}
+      target: ${{ secrets.TARGET }}
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
@@ -85,7 +85,9 @@ jobs:
           ${{ runner.os }}-maven-
     - uses: actions/download-artifact@master
       with:
-        name: artifacts    
+        name: artifacts   
+    - name: Echo variables
+      run: echo ${target} 
     - name: Deploy to Sandbox
       run: |
         artifactName=$(ls *.jar | head -1)
