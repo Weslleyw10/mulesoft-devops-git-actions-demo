@@ -94,4 +94,4 @@ jobs:
         -s .maven/settings.xml \
         -DskipTests \
         -DskipDeploymentVerification="true" \
-        -Dtarget="${{ target }}"
+        -Dtarget=${target}
