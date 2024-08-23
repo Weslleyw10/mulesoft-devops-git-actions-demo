@@ -70,7 +70,7 @@ jobs:
         artifactName=$(ls *.jar | head -1)
         mvn deploy \
          -s .maven/settings.xml \
-         -Dmule.artifact=$artifactName \ 
+         -Dmule.artifact=$artifactName
   deploy:
     needs: upload
     runs-on: ubuntu-latest
