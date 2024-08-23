@@ -1,0 +1,53 @@
+<settings>
+    <servers>
+        <server>
+            <id>mule-ee-repository</id>
+			<username>cmpfs.nexus</username>
+        	<password>a4iLRVKDRREbc3f</password>
+        </server>    
+         <server>
+            <id>anypoint-caldic-exchange</id>
+            <username>~~~Client~~~</username>
+        	<password>5e0b6cdf197d45c28519f15ccc47efdd~?~57AC31BECA5e47589D1A2667763bbB74</password>
+        </server>
+         <server>
+            <id>anypoint-core-exchange</id>
+            <username>~~~Client~~~</username>
+        	<password>5e0b6cdf197d45c28519f15ccc47efdd~?~57AC31BECA5e47589D1A2667763bbB74</password>
+        </server>
+    </servers>
+    <profiles>
+        <profile>
+            <id>mule-ee</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>anypoint-core-exchange</id>
+                    <name>Anypoint Exchange Caldic</name>
+                    <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/cdc843be-ee07-442b-a612-9968d84e4d05/maven</url>
+                    <layout>default</layout>
+                </repository>
+                <repository>
+                    <id>anypoint-caldic-exchange</id>
+                    <name>Anypoint Exchange Caldic</name>
+                    <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/a35cc900-5c18-44dc-ab18-da777baf61ba/maven</url>
+                    <layout>default</layout>
+                </repository>
+                <repository>
+                    <id>mule-ee-repository</id>
+                    <name>MuleRepository</name>
+                    <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+                    <layout>default</layout>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
+</settings>

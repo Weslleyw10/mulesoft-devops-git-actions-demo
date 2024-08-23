@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cdc843be-ee07-442b-a612-9968d84e4d05</groupId>
-	<artifactId>eapi-exemplo-devops-app</artifactId>
+	<artifactId>mulesoft-deveops-git-actions-demo-app</artifactId>
 	<packaging>mule-application</packaging>
-	<name>eapi-example-devops</name>
+	<name>mulesoft-deveops-git-actions-demo</name>
 	<version>1.0.0</version>
 	<properties>
 		<type>app</type>
@@ -38,8 +38,8 @@
 						<environment>${ch.environment}</environment>
 						<target>${ch.target}</target>
 						<muleVersion>${ch.muleVersion}</muleVersion>
-						<connectedAppClientId>${ch.connectedAppClientId}</connectedAppClientId>
-						<connectedAppClientSecret>${ch.connectedAppClientSecret}</connectedAppClientSecret>
+						<connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
+						<connectedAppClientSecret>${connectedAppClientSecret}</connectedAppClientSecret>
 						<connectedAppGrantType>client_credentials</connectedAppGrantType>
 						<applicationName>${ch.applicationName}</applicationName>
 						<replicas>${ch.replicas}</replicas>
@@ -57,7 +57,7 @@
 							<anypoint.platform.client_id>${prop.anypoint.platform.client_id}</anypoint.platform.client_id>
 						</properties>
 						<secureProperties>
-							<runtime.key>${prop.runtime.key}</runtime.key>
+							<runtime.key>${runtime.key}</runtime.key>
 							<anypoint.platform.client_secret>${prop.anypoint.platform.client_secret}</anypoint.platform.client_secret>
 						</secureProperties>
 						<deploymentSettings>
