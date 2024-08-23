@@ -7,14 +7,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-      env:
-        target: ${{ vars.TARGET }}
-        connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
-        connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-        runtimeKey: ${{ secrets.RUNTIME_KEY }}
-        environment: ${{ vars.ENVIRONMENT }}
-        muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
-        businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"   
+    env:
+      target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"   
     steps:    
     - uses: actions/checkout@v3    
     - uses: actions/cache@v3
@@ -46,14 +46,14 @@ jobs:
   upload:
     needs: build
     runs-on: ubuntu-latest
-      env:
-        target: ${{ vars.TARGET }}
-        connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
-        connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-        runtimeKey: ${{ secrets.RUNTIME_KEY }}
-        environment: ${{ vars.ENVIRONMENT }}
-        muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
-        businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
+    env:
+      target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
@@ -74,14 +74,14 @@ jobs:
   deploy:
     needs: upload
     runs-on: ubuntu-latest
-      env:
-        target: ${{ vars.TARGET }}
-        connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
-        connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-        runtimeKey: ${{ secrets.RUNTIME_KEY }}
-        environment: ${{ vars.ENVIRONMENT }}
-        muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
-        businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
+    env:
+      target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
