@@ -66,8 +66,13 @@ jobs:
     needs: upload
     runs-on: ubuntu-latest
     env:
-      CA_CLIENT_ID: ${{ secrets.CA_CLIENT_ID }}
-      CA_CLIENT_SECRET: ${{ secrets.CA_CLIENT_SECRET }}
+      target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
@@ -83,7 +88,14 @@ jobs:
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
-         -Dmule.artifact=$artifactName \
-         -s .maven/settings.xml \
-         -DskipTests \
-         -DskipDeploymentVerification="true"
+        -Dmule.artifact=$artifactName \
+        -s .maven/settings.xml \
+        -DskipTests \
+        -DskipDeploymentVerification="true"
+        -Dtarget=${{env.target}} \
+        -DconnectedAppClientId=${{env.connectedAppClientId}} \
+        -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
+        -Druntime.key=${{env.runtimeKey}} \
+        -Denvironment=${{env.environment}} \
+        -Dmule.environment=${{env.muleEnvironment}} \
+        -DbusinessGroup=${{env.businessGroup}}
