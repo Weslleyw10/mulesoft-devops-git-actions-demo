@@ -14,10 +14,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<app.runtime>4.7.2</app.runtime>
 		<mule.maven.plugin.version>4.2.0</mule.maven.plugin.version>
-		<munit.version>3.2.0</munit.version>
+		<munit.version>3.2.1</munit.version>
 		<buildversion>1.0.1</buildversion>
 	</properties>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -43,13 +42,13 @@
 						<businessGroupId>${businessGroup}</businessGroupId>
 						<environment>${environment}</environment>
 						<target>${target}</target>
-						<muleVersion>${ch.muleVersion}</muleVersion>
+						<muleVersion>4.7.2</muleVersion>
 						<connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
 						<connectedAppClientSecret>${connectedAppClientSecret}</connectedAppClientSecret>
 						<connectedAppGrantType>client_credentials</connectedAppGrantType>
-						<applicationName>${ch.applicationName}</applicationName>
-						<replicas>${ch.replicas}</replicas>
-						<vCores>${ch.vCores}</vCores>
+						<applicationName>mulesoft-deveops-git-actions-demo-dev</applicationName>
+						<replicas>1</replicas>
+						<vCores>0.1</vCores>
 						<integrations>
 							<services>
 								<objectStoreV2>
@@ -58,16 +57,16 @@
 							</services>
 						</integrations>
 						<properties>
-							<anypoint.platform.visualizer.layer>${prop.anypoint.platform.visualizer.layer}</anypoint.platform.visualizer.layer>
+							<anypoint.platform.visualizer.layer>System</anypoint.platform.visualizer.layer>
 							<mule.env>${mule.environment}</mule.env>
-							<anypoint.platform.client_id>${prop.anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_id>4288b641cee742ca8844b7fe8f4a9cfd</anypoint.platform.client_id>
 						</properties>
 						<secureProperties>
 							<runtime.key>${runtime.key}</runtime.key>
-							<anypoint.platform.client_secret>${prop.anypoint.platform.client_secret}</anypoint.platform.client_secret>
+							<anypoint.platform.client_secret>FF03805BD7084266B454427E0A8826e0</anypoint.platform.client_secret>
 						</secureProperties>
 						<deploymentSettings>
-							<generateDefaultPublicUrl>${ch.generateDefaultPublicUrl}</generateDefaultPublicUrl>
+							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
 						</deploymentSettings>
 					</cloudhub2Deployment>
 				</configuration>
@@ -112,6 +111,20 @@
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.4</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<version>${munit.version}</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<version>${munit.version}</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<distributionManagement>
