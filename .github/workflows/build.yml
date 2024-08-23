@@ -77,7 +77,7 @@ jobs:
       connectedAppClientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
       connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
       runtime.key: ${{ secrets.RUNTIME_KEY }}
-      target: ${{ TARGET }}
+      target: ${TARGET}
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
