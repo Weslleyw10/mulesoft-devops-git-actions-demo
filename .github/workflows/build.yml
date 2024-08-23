@@ -91,7 +91,7 @@ jobs:
         -Dtarget=${{env.target}} \
         -DconnectedAppClientId=${{env.connectedAppClientId}} \
         -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
-        -Druntime.key=${{env.runtimeKey}} \
+        -Druntimekey=${{env.runtimeKey}} \
         -Denvironment=${{env.environment}} \
-        -Dmule.environment=${{env.muleEnvironment}} \
+        -DmuleEnv=${{env.muleEnvironment}} \
         -DbusinessGroup=${{env.businessGroup}}

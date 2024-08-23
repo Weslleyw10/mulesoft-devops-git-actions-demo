@@ -58,11 +58,11 @@
 						</integrations>
 						<properties>
 							<anypoint.platform.visualizer.layer>System</anypoint.platform.visualizer.layer>
-							<mule.env>${mule.environment}</mule.env>
+							<mule.env>${muleEnv}</mule.env>
 							<anypoint.platform.client_id>4288b641cee742ca8844b7fe8f4a9cfd</anypoint.platform.client_id>
 						</properties>
 						<secureProperties>
-							<runtime.key>${runtime.key}</runtime.key>
+							<runtime.key>${runtimekey}</runtime.key>
 							<anypoint.platform.client_secret>FF03805BD7084266B454427E0A8826e0</anypoint.platform.client_secret>
 						</secureProperties>
 						<deploymentSettings>
