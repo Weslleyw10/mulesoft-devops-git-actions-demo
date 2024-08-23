@@ -87,7 +87,7 @@ jobs:
     - name: Deploy to Sandbox
       run: |
         mvn deploy -DmuleDeploy --settings .maven/settings.xml -DskipMunitTests \
-        -DskipDeploymentVerification="true"
+        -DskipDeploymentVerification="true" \
         -Dtarget=${{env.target}} \
         -DconnectedAppClientId=${{env.connectedAppClientId}} \
         -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
