@@ -1,0 +1,31 @@
+#%RAML 1.0
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/c7351ec6-7678-4a07-8579-a93d96baab19/ # 
+title: Clients
+version: 1.0.0
+mediaType: [ application/json ]
+types:
+  Client: !include types/client.raml
+  Property: !include types/property.raml
+
+/clients:
+  get:
+    responses:
+      200:
+        body:
+          type: Client[]
+          examples: !include samples/clients.raml
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            type: Client
+            examples: !include samples/client.raml
+/properties:
+  get:
+    responses:
+      200:
+        body:
+          type: Property[]
+          examples: !include samples/properties.raml
+

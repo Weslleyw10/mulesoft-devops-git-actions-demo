@@ -1,0 +1,12 @@
+api:
+  id: ""
+  client_id: ""
+  name: "eapi-example-devops-qa"
+  version: "1.0.0"
+  logUrl: ""
+ 
+sapi-azure-sql-server:
+  host: ""
+  port: "443"
+  protocol: "HTTPS"
+  basePath: "/api/v1"

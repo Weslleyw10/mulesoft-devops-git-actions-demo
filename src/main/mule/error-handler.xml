@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="api-error-handler" doc:id="530bcad9-a0c1-4f77-8f0d-5b29ad2e56c9" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a0bbfd94-65d5-4004-8f3d-7cf181f7639d" type="ANY" >
+			<flow-ref doc:name="prepare-error-message" doc:id="6af38bc5-9f75-4e33-ac11-08fec0f01f55" name="prepare-error-message" />
+			<set-variable value="500" doc:name="httpStatusCode" doc:id="49999fae-e7af-43ba-8c28-943ffa0cad06" variableName="httpStatusCode" />
+		</on-error-propagate>
+	</error-handler>
+</mule>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="implementations-tests.xml" />
+	<munit:test name="implementations-tests-implementation.getClientsFlowTest" description="Test" doc:id="8538c362-5fe4-421f-a5fe-a6a3d8592d37" >
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to implementation.getClientsFlow" doc:id="41d418c3-c1e1-4cf8-be0c-09956c9e0c13" name="implementation.getClientsFlow"/>
+			<ee:transform doc:name="Expected Payload" doc:id="b0908b9a-5a77-4d77-87c6-4f95c92876de" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    id: 1,
+    name: "Mike Stone",
+    email: "mike.stowe@provider.com"
+  }, 
+  {
+    id: 2,
+    name: "Martin Stone",
+    email: "martin.stowe@provider.com"
+  }
+]]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="58bf5d0a-09b0-4d5f-9017-2957f7d8cd99" expression="#[payload]" is='#[MunitTools::equalTo(vars.expectedPayload)]' message="Payload not equal"/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implementations-tests-implamentation.getClientFlowTest" description="Test" doc:id="d5185b61-ec70-400e-98d5-3cbdfe37cc50" >
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to implamentation.getClientFlow" doc:id="70376b7a-b566-4e2c-a89a-5a2cd2149836" name="implamentation.getClientFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<ee:transform doc:name="Expected Payload" doc:id="65437182-a31f-4eb2-8cfe-f7c400abb3d0" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="expectedPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  id: 1,
+  name: "Mike Stone",
+  email: "mike.stowe@provider.com"
+}]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="eba87d31-d4ab-4e51-bc39-a780bac8a737" expression="#[payload]" is="#[MunitTools::equalTo(vars.expectedPayload)]" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
