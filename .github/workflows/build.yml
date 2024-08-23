@@ -74,10 +74,12 @@ jobs:
     needs: upload
     runs-on: ubuntu-latest
     env:
-      connectedAppClientId: ${{ secrets.CONNECTED_APP_CLIENT_ID }}
-      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
-      runtime.key: ${{ secrets.RUNTIME_KEY }}
       target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
@@ -97,4 +99,9 @@ jobs:
         -s .maven/settings.xml \
         -DskipTests \
         -DskipDeploymentVerification="true" \
-        -Dtarget=${{env.target}}
+        -Dtarget=${{env.target}} \
+        -DconnectedAppClientId=${{env.connectedAppClientId}} \
+        -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
+        -Druntime.key=${{env.runtimeKey}} \
+        -Denvironment=${{env.environment}} \
+        -Dmule.environment=${{env.muleEnvironment}}

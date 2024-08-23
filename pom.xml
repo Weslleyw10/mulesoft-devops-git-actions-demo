@@ -35,7 +35,7 @@
 						<uri>https://anypoint.mulesoft.com </uri>
 						<provider>MC</provider>
 						<businessGroup>${ch.businessGroup}</businessGroup>
-						<environment>${ch.environment}</environment>
+						<environment>${environment}</environment>
 						<target>${target}</target>
 						<muleVersion>${ch.muleVersion}</muleVersion>
 						<connectedAppClientId>${connectedAppClientId}</connectedAppClientId>
@@ -53,7 +53,7 @@
 						</integrations>
 						<properties>
 							<anypoint.platform.visualizer.layer>${prop.anypoint.platform.visualizer.layer}</anypoint.platform.visualizer.layer>
-							<mule.env>${prop.mule.environment}</mule.env>
+							<mule.env>${mule.environment}</mule.env>
 							<anypoint.platform.client_id>${prop.anypoint.platform.client_id}</anypoint.platform.client_id>
 						</properties>
 						<secureProperties>
