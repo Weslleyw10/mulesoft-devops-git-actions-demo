@@ -80,6 +80,7 @@ jobs:
       runtimeKey: ${{ secrets.RUNTIME_KEY }}
       environment: ${{ vars.ENVIRONMENT }}
       muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:    
     - uses: actions/checkout@v3
     - uses: actions/cache@v3
@@ -104,4 +105,5 @@ jobs:
         -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
         -Druntime.key=${{env.runtimeKey}} \
         -Denvironment=${{env.environment}} \
-        -Dmule.environment=${{env.muleEnvironment}}
+        -Dmule.environment=${{env.muleEnvironment}} \
+        -DbusinessGroup=${{env.businessGroup}}

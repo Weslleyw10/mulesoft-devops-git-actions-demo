@@ -34,7 +34,7 @@
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com </uri>
 						<provider>MC</provider>
-						<businessGroup>${ch.businessGroup}</businessGroup>
+						<businessGroup>${businessGroup}</businessGroup>
 						<environment>${environment}</environment>
 						<target>${target}</target>
 						<muleVersion>${ch.muleVersion}</muleVersion>
