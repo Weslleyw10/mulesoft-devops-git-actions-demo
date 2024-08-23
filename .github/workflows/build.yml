@@ -65,6 +65,10 @@ jobs:
   deploy:
     needs: upload
     runs-on: ubuntu-latest
+    environment: dev
+      env:
+        APP_ID: ${{ vars.APP_ID }}
+        APP_SECRET: ${{ vars.APP_SECRET }}
     env:
       target: ${{ vars.TARGET }}
       connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
@@ -91,7 +95,7 @@ jobs:
         -Dtarget=${{env.target}} \
         -DconnectedAppClientId=${{env.connectedAppClientId}} \
         -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
-        -Druntimekey=${{env.runtimeKey}} \
+        -Druntime.key=${{env.runtimeKey}} \
         -Denvironment=${{env.environment}} \
-        -DmuleEnv=${{env.muleEnvironment}} \
+        -Dmule.env=${{env.muleEnvironment}} \
         -DbusinessGroup=${{env.businessGroup}}
