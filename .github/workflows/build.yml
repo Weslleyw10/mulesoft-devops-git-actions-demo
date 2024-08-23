@@ -86,11 +86,7 @@ jobs:
         name: artifacts
     - name: Deploy to Sandbox
       run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy -DmuleDeploy \
-        -Dmule.artifact=$artifactName \
-        -s .maven/settings.xml \
-        -DskipTests \
+        mvn deploy -DmuleDeploy --settings .maven/settings.xml -DskipMunitTests \
         -DskipDeploymentVerification="true"
         -Dtarget=${{env.target}} \
         -DconnectedAppClientId=${{env.connectedAppClientId}} \
