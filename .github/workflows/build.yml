@@ -16,6 +16,7 @@ jobs:
       environment: ${{ vars.ENVIRONMENT }}
       muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
       businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
+      NON_PRD_SECRET: ${{ secrets.NON_PRD_SECRET}}
     steps:  
     - name: log vars
-      run: echo ${{env.target}} ${{env.runtimeKey}}
+      run: echo "TARGET ${{env.target}} | RUNTIME_KEY ${{env.NON_PRD_SECRET}}  | Conn App Non Prd ${{vars.CONNECTED_APP_NON_PRD_CLIENT_ID}}"
