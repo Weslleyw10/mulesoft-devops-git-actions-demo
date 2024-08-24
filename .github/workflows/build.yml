@@ -17,4 +17,4 @@ jobs:
       businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:  
     - name: log vars
-      run: echo ${env.target}
+      run: echo ${{env.target}}
