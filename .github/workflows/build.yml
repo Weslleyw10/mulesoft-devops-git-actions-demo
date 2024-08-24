@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: qa
     env:
       target: ${{ vars.TARGET }}
       connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
@@ -17,4 +18,4 @@ jobs:
       businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
     steps:  
     - name: log vars
-      run: echo ${{env.target}}
+      run: echo ${{env.target}} ${{env.runtimeKey}}
