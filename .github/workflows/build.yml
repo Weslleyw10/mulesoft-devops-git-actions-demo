@@ -5,6 +5,12 @@ on:
   push:
     branches: [ main ]
 jobs:
+  approval:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Awaiting approval
+        uses: actions/approval@v1
   deploy:
     runs-on: ubuntu-latest
     environment: qa
