@@ -29,4 +29,4 @@ jobs:
     steps:
     - name: Deploy to CloudHub 2.0
       run: |
-        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml 
+        mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
