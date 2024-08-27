@@ -4,68 +4,6 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    environment: qa
-    env:
-      nexus_username: ${{ vars.NEXUS_USER }}
-      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      runtime_key: ${{ secrets.RUNTIME_KEY }}    
-    steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v3
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: 8
-    - name: Test with Maven
-      run: mvn test --settings .maven/settings.xml -Druntime.key="$runtime_key"
-    - name: Upload MUnit reports
-      uses: actions/upload-artifact@v3
-      with:
-        name: munit-test-reports
-        path: target/site/munit/coverage/
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    environment: qa
-    env:
-      nexus_username: ${{ vars.NEXUS_USER }}
-      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
-      conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
-      runtime_key: ${{ secrets.RUNTIME_KEY }} 
-    steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v4
-    - name: Cache dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-maven-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v4
-      with:
-        distribution: "zulu"
-        java-version: 8
-    - name: Publish to Exchange
-      run: |
-        mvn deploy --settings .maven/settings.xml -DskipMunitTests \
-        -Dconnected.app.client.id="${{ env.conn_app_non_prd_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_non_prd_secret }}"   
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -91,7 +29,7 @@ jobs:
     steps:
     - name: Deploy to CloudHub 2.0
       run: |
-        mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
+        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_non_prd_id }}" \
         -Dconnected.app.client.secret="${{ env.conn_app_non_prd_secret }}" \
         -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
