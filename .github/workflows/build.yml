@@ -27,6 +27,6 @@ jobs:
         java-version: 8
     - name: Publish to Exchange
       run: |
-        mvn deploy --settings -DskipMunitTests .maven/settings.xml \
+        mvn deploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{env.conn_app_non_prd_id}}" \
         -Dconnected.app.client.secret="${{env.conn_app_non_prd_secret}}"  
