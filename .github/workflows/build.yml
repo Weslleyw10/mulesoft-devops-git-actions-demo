@@ -66,3 +66,42 @@ jobs:
         mvn deploy --settings .maven/settings.xml -DskipMunitTests \
         -Dconnected.app.client.id="${{ env.conn_app_non_prd_id }}" \
         -Dconnected.app.client.secret="${{ env.conn_app_non_prd_secret }}"   
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: qa
+    env:
+      nexus_username: ${{ vars.NEXUS_USER }}
+      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
+      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
+      conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
+      conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
+      anypoint_platform_id: ${{vars.ANYPOINT_PLATFORM_CLIENT_ID}}
+      anypoint_platform_secret: ${{secrets.ANYPOINT_PLATFORM_CLIENT_SECRET}}
+      mule_env: ${{vars.MULE_ENV}}
+      anypoint_platform_visualizer_layer: ${{vars.ANYPOINT_PLATFORM_VISUALIZER_LAYER}}
+      runtime_key: ${{ secrets.RUNTIME_KEY }}   
+      vcores: ${{ vars.VCORES }}   
+      replicas: ${{ vars.REPLICAS }}   
+      target: ${{ vars.TARGET }}   
+      environment: ${{ vars.ENVIRONMENT }}   
+      business_group_id: ${{ vars.BUSINESS_GROUP_ID }}   
+      mule_version: ${{ vars.MULE_VERSION }}   
+    - name: Deploy to CloudHub 2.0
+        run: |
+        mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
+        -Dconnected.app.client.id="${{ env.conn_app_non_prd_id }}" \
+        -Dconnected.app.client.secret="${{ env.conn_app_non_prd_secret }}" \
+        -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
+        -Dprop.anypoint.platform.client_secret="${{ env.anypoint_platform_secret }}" \
+        -Dprop.anypoint.platform.visualizer.layer="${{ env.anypoint_platform_visualizer_layer }}" \
+        -Dprop.mule.env="${{ env.mule_env }}" \
+        -Dprop.runtime.key="${{ env.runtime_key }}" \
+        -Dch.vcores="${{ env.vcores }}" \
+        -Dch.replicas="${{ env.replicas }}" \
+        -Dch.target="${{ env.target }}" \
+        -Dch.environment="${{ env.environment }}" \
+        -Dch.business.group.id="${{ env.business_group_id }}" \
+        -Dch.mule.version="${{ env.mule_version }}" 
+ 
