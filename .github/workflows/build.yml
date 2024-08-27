@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   deploy:
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
     environment: qa
     env:
