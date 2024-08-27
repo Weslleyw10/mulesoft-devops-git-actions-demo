@@ -10,7 +10,7 @@
 	<munit:config name="new-test-suite.xml" />
 	<munit:test name="new-test-suiteTest" doc:id="e58564dc-08a2-47ac-8d13-78e7989dfe5c" >
 		<munit:execution >
-			<logger level="INFO" doc:name="Logger" doc:id="72f347c2-4a3a-4d73-9a7b-e1cdb779da0e" />
+			<flow-ref doc:name="mulesoft-devops-git-actions-demoFlow" doc:id="c25bd7de-75ed-461c-8f63-7d625aed5806" name="mulesoft-devops-git-actions-demoFlow"/>
 		</munit:execution>
 	</munit:test>
 
