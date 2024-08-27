@@ -29,7 +29,9 @@ jobs:
     steps:
     - name: Deploy to CloudHub 2.0
       run: |
-        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
+        mvn deploy -DmuleDeploy \
+        -DskipMunitTests \
+        -s .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_non_prd_id }}" \
         -Dconnected.app.client.secret="${{ env.conn_app_non_prd_secret }}" \
         -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
