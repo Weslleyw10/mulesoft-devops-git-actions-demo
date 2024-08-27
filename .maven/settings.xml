@@ -2,18 +2,18 @@
     <servers>
         <server>
             <id>mule-ee-repository</id>
-			<username>cmpfs.nexus</username>
-        	<password>a4iLRVKDRREbc3f</password>
+			<username>${nexus_username}</username>
+        	<password>${nexus_password}</password>
         </server>    
          <server>
             <id>anypoint-caldic-exchange</id>
             <username>~~~Client~~~</username>
-        	<password>5e0b6cdf197d45c28519f15ccc47efdd~?~57AC31BECA5e47589D1A2667763bbB74</password>
+        	<password>${conn_app_exchange_id}~?~${conn_app_exchange_secret}</password>
         </server>
          <server>
             <id>anypoint-core-exchange</id>
             <username>~~~Client~~~</username>
-        	<password>5e0b6cdf197d45c28519f15ccc47efdd~?~57AC31BECA5e47589D1A2667763bbB74</password>
+        	<password>${conn_app_exchange_id}~?~${conn_app_exchange_secret}</password>
         </server>
     </servers>
     <profiles>
