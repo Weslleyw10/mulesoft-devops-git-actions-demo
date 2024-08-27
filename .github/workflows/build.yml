@@ -5,28 +5,34 @@ on:
   workflow_dispatch:
 jobs:
   deploy:
-    # needs: build
     runs-on: ubuntu-latest
-    environment: qa
     env:
-      nexus_username: ${{ vars.NEXUS_USER }}
-      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
-      conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
-      anypoint_platform_id: ${{vars.ANYPOINT_PLATFORM_CLIENT_ID}}
-      anypoint_platform_secret: ${{secrets.ANYPOINT_PLATFORM_CLIENT_SECRET}}
-      mule_env: ${{vars.MULE_ENV}}
-      anypoint_platform_visualizer_layer: ${{vars.ANYPOINT_PLATFORM_VISUALIZER_LAYER}}
-      runtime_key: ${{ secrets.RUNTIME_KEY }}   
-      vcores: ${{ vars.VCORES }}   
-      replicas: ${{ vars.REPLICAS }}   
-      target: ${{ vars.TARGET }}   
-      environment: ${{ vars.ENVIRONMENT }}   
-      business_group_id: ${{ vars.BUSINESS_GROUP_ID }}   
-      mule_version: ${{ vars.MULE_VERSION }}   
-    steps:
-    - name: Deploy to CloudHub 2.0
+      target: ${{ vars.TARGET }}
+      connectedAppClientId: ${{ vars.CONNECTED_APP_CLIENT_ID }}
+      connectedAppClientSecret: ${{ secrets.CONNECTED_APP_CLIENT_SECRET }}
+      runtimeKey: ${{ secrets.RUNTIME_KEY }}
+      environment: ${{ vars.ENVIRONMENT }}
+      muleEnvironment: ${{ vars.MULE_ENVIRONMENT }}
+      businessGroup: "cdc843be-ee07-442b-a612-9968d84e4d05"
+    steps:    
+    - uses: actions/checkout@v3
+    - uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - uses: actions/download-artifact@master
+      with:
+        name: artifacts
+    - name: Deploy to Sandbox
       run: |
-        mvn deploy --settings .maven/settings.xml -DskipMunitTests -DmuleDeploy \
+        mvn deploy -DmuleDeploy --settings .maven/settings.xml -DskipMunitTests \
+        -DskipDeploymentVerification="true" \
+        -Dtarget=${{env.target}} \
+        -DconnectedAppClientId=${{env.connectedAppClientId}} \
+        -DconnectedAppClientSecret=${{env.connectedAppClientSecret}} \
+        -Druntime.key=${{env.runtimeKey}} \
+        -Denvironment=${{env.environment}} \
+        -Dmule.env=${{env.muleEnvironment}} \
+        -DbusinessGroup=${{env.businessGroup}}
