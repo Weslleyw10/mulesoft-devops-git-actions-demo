@@ -48,8 +48,10 @@ jobs:
     environment: qa   
     steps:
     - name: Checkout this repo
+      if: upgrate-version.steps.bump.outputs.bumped == false
       uses: actions/checkout@v3
     - name: Cache dependencies
+      if: upgrate-version.steps.bump.outputs.bumped == false
       uses: actions/cache@v3
       with:
         path: ~/.m2/repository
@@ -57,15 +59,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
     - name: Set up JDK 1.8
+      if: upgrate-version.steps.bump.outputs.bumped == false
       uses: actions/setup-java@v3
       with:
         distribution: 'zulu'
         java-version: 8
     - name: Test with Maven
-      if: steps.bump.outputs.bumped == false
+      if: upgrate-version.steps.bump.outputs.bumped == false
       run: mvn test --settings .maven/settings.xml -Druntime.key="${{env.runtime_key}}"
     - name: Upload MUnit reports
-      if: steps.bump.outputs.bumped == false
+      if: upgrate-version.steps.bump.outputs.bumped == false
       uses: actions/upload-artifact@v3
       with:
         name: munit-test-reports
@@ -76,16 +79,10 @@ jobs:
     environment: qa
     steps:
     - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GH_LOGIN_TOKEN }}
-        ref: ${{ github.head_ref }}
     - name: Set up Java
       uses: actions/setup-java@v1
       with:
         java-version: 11
-    - name: Bump version
-      id: bump
-      uses: mickem/gh-action-bump-maven-version@v1.0.0
     - name: Publish to Exchange
       if: steps.bump.outputs.bumped == false
       run: |
