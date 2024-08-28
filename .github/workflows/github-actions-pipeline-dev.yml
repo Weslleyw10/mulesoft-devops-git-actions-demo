@@ -46,6 +46,7 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Test with Maven
+      if: steps.bump.outputs.bumped == false
       run: mvn test --settings .maven/settings.xml -Druntime.key="${{env.runtime_key}}"
     - name: Upload MUnit reports
       uses: actions/upload-artifact@v3
@@ -93,6 +94,7 @@ jobs:
         distribution: "zulu"
         java-version: 8
     - name: Deploy to CloudHub 2.0
+      if: steps.bump.outputs.bumped == false
       run: |
         mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
