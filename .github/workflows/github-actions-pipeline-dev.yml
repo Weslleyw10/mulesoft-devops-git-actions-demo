@@ -22,4 +22,4 @@ jobs:
           token: ${{ secrets.GH_LOGIN_TOKEN }}
 
       - name: Print
-        run: echo ${{vars.VERSION_CONTROL}}
+        run: echo $VERSION_CONTROL
