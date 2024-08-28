@@ -1,11 +1,11 @@
-name: Test, Build and Deploy to non-prod environment
+name: Test, Build And Deploy to QA
 on:
   push:
     branches: [ develop ]
   pull_request:
     branches: [ develop ]
-  workflow_dispatch:
 env:
+  version_control: ${{ vars.VERSION_CONTROL }}-dev
   nexus_username: ${{vars.NEXUS_USER}}
   nexus_password: ${{secrets.NEXUS_PASSWORD}}
   conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
@@ -25,25 +25,9 @@ env:
   release_channel: ${{vars.RELEASE_CHANNEL}}
   business_group_id: ${{vars.BUSINESS_GROUP_ID}}
   mule_version: ${{vars.MULE_VERSION}}
-  clustered: ${{vars.CLUSTERED}}  
+  clustered: ${{vars.CLUSTERED}}
 jobs:
-  upgrate-version:
-    runs-on: ubuntu-latest
-    environment: qa
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_LOGIN_TOKEN }}
-          ref: ${{ github.head_ref }}
-      - name: Set up Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - name: Bump version
-        id: bump
-        uses: mickem/gh-action-bump-maven-version@v1.0.0
   test:
-    needs: upgrate-version
     runs-on: ubuntu-latest
     environment: qa   
     steps:
@@ -62,10 +46,8 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Test with Maven
-      if: steps.bump.outputs.bumped == false
-      run: mvn test --settings .maven/settings.xml -Druntime.key="${{env.runtime_key}}"
+      run: mvn test --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
     - name: Upload MUnit reports
-      if: steps.bump.outputs.bumped == false
       uses: actions/upload-artifact@v3
       with:
         name: munit-test-reports
@@ -79,13 +61,21 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 11  
+    - name: Upgrade Version
+      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false
+    - name: Print Version Control
+      run: echo "${{ env.version_control }}" 
     - name: Publish to Exchange
-      if: steps.bump.outputs.bumped == false
       run: |
         mvn deploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"   
+        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"  
+    - name: Increment Variable
+      uses: action-pack/increment@v2
+      with:
+        name: 'VERSION_CONTROL'
+        token: ${{ secrets.GH_LOGIN_TOKEN }} 
   deploy:
     needs: build
     runs-on: ubuntu-latest
