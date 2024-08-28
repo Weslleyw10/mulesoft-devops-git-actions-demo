@@ -27,7 +27,23 @@ env:
   mule_version: ${{vars.MULE_VERSION}}
   clustered: ${{vars.CLUSTERED}}  
 jobs:
+  upgrate-version:
+    runs-on: ubuntu-latest
+    environment: qa
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_LOGIN_TOKEN }}
+          ref: ${{ github.head_ref }}
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Bump version
+        id: bump
+        uses: mickem/gh-action-bump-maven-version@v1.0.0
   test:
+    needs: upgrate-version
     runs-on: ubuntu-latest
     environment: qa   
     steps:
@@ -49,6 +65,7 @@ jobs:
       if: steps.bump.outputs.bumped == false
       run: mvn test --settings .maven/settings.xml -Druntime.key="${{env.runtime_key}}"
     - name: Upload MUnit reports
+      if: steps.bump.outputs.bumped == false
       uses: actions/upload-artifact@v3
       with:
         name: munit-test-reports
