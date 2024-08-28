@@ -24,7 +24,14 @@ jobs:
       - name: Print
         run: echo  ${{ steps.versioning.outputs.version }}
 
-
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.versioning.outputs.version }}
+          release_name: ${{ steps.versioning.outputs.version }}
+          prerelease: true
 
 
           
