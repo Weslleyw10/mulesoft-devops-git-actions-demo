@@ -5,7 +5,7 @@
 	<artifactId>mulesoft-deveops-git-actions-demo-app</artifactId>
 	<packaging>mule-application</packaging>
 	<name>mulesoft-deveops-git-actions-demo</name>
-	<version>1.0.17</version>
+	<version>1.0.18</version>
 	<properties>
 		<type>app</type>
 		<tags/>
@@ -50,6 +50,8 @@
 						<applicationName>${app.name}-${prop.mule.env}</applicationName>
 						<replicas>${ch.replicas}</replicas>
 						<vCores>${ch.vcores}</vCores>
+						<javaVersion>${ch.java.version}</javaVersion>
+						<releaseChannel>${ch.release.channel}</releaseChannel>
 						<integrations>
 							<services>
 								<objectStoreV2>
