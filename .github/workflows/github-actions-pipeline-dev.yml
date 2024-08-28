@@ -22,7 +22,7 @@ jobs:
           minor_pattern: "feat:"
           format: "v${major}.${minor}.${patch}-prerelease${increment}"
       - name: Print
-        run: echo ${{ steps.versioning.outputs.version }}
+        run: echo  ${{ steps.versioning.outputs.version }}
 
 
 
