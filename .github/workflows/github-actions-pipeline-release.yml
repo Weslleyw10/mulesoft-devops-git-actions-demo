@@ -2,6 +2,8 @@ name: Test, Build and Deploy to prd environment
 on:
   push:
     branches: [ prd ]
+  pull_request:
+    branches: [ prd ]    
   workflow_dispatch:
 env:
   nexus_username: ${{vars.NEXUS_USER}}
