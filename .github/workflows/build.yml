@@ -1,18 +1,33 @@
-name: Build and Deploy to NON Prd Environment
+name: Test, Build and Deploy to non-prd environment
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+env:
+  nexus_username: ${{vars.NEXUS_USER}}
+  nexus_password: ${{secrets.NEXUS_PASSWORD}}
+  conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
+  conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
+  conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
+  conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
+  anypoint_platform_id: ${{vars.ANYPOINT_PLATFORM_CLIENT_ID}}
+  anypoint_platform_secret: ${{secrets.ANYPOINT_PLATFORM_CLIENT_SECRET}}
+  mule_env: ${{vars.MULE_ENV}}
+  anypoint_platform_visualizer_layer: ${{vars.ANYPOINT_PLATFORM_VISUALIZER_LAYER}}
+  runtime_key: ${{secrets.RUNTIME_KEY}}
+  vcores: ${{vars.VCORES}}
+  replicas: ${{vars.REPLICAS}}
+  target: ${{vars.TARGET}}
+  environment: ${{vars.ENVIRONMENT}} 
+  java_version: ${{vars.JAVA_VERSION}}
+  release_channel: ${{vars.RELEASE_CHANNEL}}
+  business_group_id: ${{vars.BUSINESS_GROUP_ID}}
+  mule_version: ${{vars.MULE_VERSION}}
+  clustered: ${{vars.CLUSTERED}}  
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: qa
-    env:
-      nexus_username: ${{ vars.NEXUS_USER }}
-      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      runtime_key: ${{ secrets.RUNTIME_KEY }}    
+    environment: qa   
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v3
@@ -39,14 +54,6 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     environment: qa
-    env:
-      nexus_username: ${{ vars.NEXUS_USER }}
-      nexus_password: ${{ secrets.NEXUS_PASSWORD }}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
-      conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
-      runtime_key: ${{ secrets.RUNTIME_KEY }} 
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v4
@@ -70,27 +77,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: qa
-    env:
-      nexus_username: ${{vars.NEXUS_USER}}
-      nexus_password: ${{secrets.NEXUS_PASSWORD}}
-      conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
-      conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
-      conn_app_non_prd_id: ${{vars.CONN_APP_NON_PROD_CLIENT_ID}}
-      conn_app_non_prd_secret: ${{secrets.CONN_APP_NON_PROD_CLIENT_SECRET}}
-      anypoint_platform_id: ${{vars.ANYPOINT_PLATFORM_CLIENT_ID}}
-      anypoint_platform_secret: ${{secrets.ANYPOINT_PLATFORM_CLIENT_SECRET}}
-      mule_env: ${{vars.MULE_ENV}}
-      anypoint_platform_visualizer_layer: ${{vars.ANYPOINT_PLATFORM_VISUALIZER_LAYER}}
-      runtime_key: ${{secrets.RUNTIME_KEY}}
-      vcores: ${{vars.VCORES}}
-      replicas: ${{vars.REPLICAS}}
-      target: ${{vars.TARGET}}
-      environment: ${{vars.ENVIRONMENT}} 
-      java_version: ${{vars.JAVA_VERSION}}
-      release_channel: ${{vars.RELEASE_CHANNEL}}
-      business_group_id: ${{vars.BUSINESS_GROUP_ID}}
-      mule_version: ${{vars.MULE_VERSION}}
-      clustered: ${{vars.CLUSTERED}}
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v4
