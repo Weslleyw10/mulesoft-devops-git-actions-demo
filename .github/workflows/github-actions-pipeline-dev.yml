@@ -46,23 +46,12 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Test with Maven
-      run: mvn package --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
+      run: mvn test --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
     - name: Upload MUnit reports
       uses: actions/upload-artifact@v3
       with:
         name: munit-test-reports
-        path: target/site/munit/coverage/
-    - name: Stamp artifact file name with commit hash
-      run: |
-        artifactName1=$(ls target/*.jar | head -1)
-        commitHash=$(git rev-parse --short "$GITHUB_SHA")
-        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
-        mv $artifactName1 $artifactName2    
-    - name: Upload artifact 
-      uses: actions/upload-artifact@master
-      with:
-        name: artifacts
-        path: target/*.jar            
+        path: target/site/munit/coverage/           
   build:
     needs: test
     runs-on: ubuntu-latest
