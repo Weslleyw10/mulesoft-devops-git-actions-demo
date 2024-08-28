@@ -21,4 +21,4 @@ jobs:
           bump-command: mvn org.codehaus.mojo:versions-maven-plugin:2.7:set-property -Dproperty=revision -DnewVersion=@NEW_VERSION@
       - name: Print
         if: steps.bump.outputs.bumped == false
-        run: echo @NEW_VERSION@"-dev"
+        run: echo @NEW_VERSION@
