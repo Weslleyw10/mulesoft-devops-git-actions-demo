@@ -103,14 +103,11 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - uses: actions/download-artifact@master
-      with:
-        name: artifacts        
+    - name: Upgrade Version
+      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false             
     - name: Deploy to CloudHub 2.0
       run: |
-        artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
-        -Dmule.artifact=$artifactName \
         -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
         -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}" \
         -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
