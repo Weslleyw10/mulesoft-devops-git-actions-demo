@@ -68,17 +68,16 @@ jobs:
       with:
         distribution: "zulu"
         java-version: 8
-    - name: Get Version
-      id: get_tag
-      run: echo ::set-output name=version::${TAG_REF_NAME##*/}
-      env:
-        TAG_REF_NAME: ${{ github.ref }}
-    - name: Release GitHub Actions
-      uses: technote-space/release-github-actions@v6
-      with:
-        BRANCH_NAME: releases/${MAJOR}
-        CLEAN_TARGETS: '.gitignore,.github,*.lock,*.json'
-        COMMIT_MESSAGE: 'build: release ${{ steps.get_tag.outputs.version }} via ${{ github.sha }}'           
+      - name: Uses POM Version Bump
+        uses: ./ #Uses an action in the root directory
+        id: bump
+        with:
+          bumpVersionType: bump
+          bumpVersion: patch
+          bumpChangelog: true
+          changelogDesc: ${{ github.event.pull_request.title }}
+      - name: Get the version number
+        run: echo "The Version Number is ${{ steps.bump.outputs.versionNumber }}"        
     - name: Publish to Exchange
       run: |
         mvn deploy -DskipMunitTests --settings .maven/settings.xml \
@@ -101,7 +100,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: "zulu"
-        java-version: 8     
+        java-version: 8
     - name: Deploy to CloudHub 2.0
       run: |
         mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
