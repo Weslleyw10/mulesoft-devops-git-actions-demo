@@ -18,6 +18,7 @@
 		<buildversion>1.0.1</buildversion>
 		<app.name>mulesoft-deveops-git-actions-demo</app.name>
 	</properties>
+	<!--- COmment -->
 	<build>
 		<plugins>
 			<plugin>
