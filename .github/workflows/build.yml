@@ -68,16 +68,16 @@ jobs:
       with:
         distribution: "zulu"
         java-version: 8
-      - name: Uses POM Version Bump
-        uses: ./ #Uses an action in the root directory
-        id: bump
-        with:
-          bumpVersionType: bump
-          bumpVersion: patch
-          bumpChangelog: true
-          changelogDesc: ${{ github.event.pull_request.title }}
-      - name: Get the version number
-        run: echo "The Version Number is ${{ steps.bump.outputs.versionNumber }}"        
+    - name: Uses POM Version Bump
+      uses: ./ #Uses an action in the root directory
+      id: bump
+      with:
+        bumpVersionType: bump
+        bumpVersion: patch
+        bumpChangelog: true
+        changelogDesc: ${{ github.event.pull_request.title }}
+    - name: Get the version number
+      run: echo "The Version Number is ${{ steps.bump.outputs.versionNumber }}"        
     - name: Publish to Exchange
       run: |
         mvn deploy -DskipMunitTests --settings .maven/settings.xml \
