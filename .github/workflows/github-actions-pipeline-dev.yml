@@ -1,26 +1,53 @@
-name: Publish package to the Maven Central Repository
+name: Test, Build And Deploy
 on:
   push:
     branches:
       - 'develop'
 env:
-  VERSION_CONTROL: ${{ vars.VERSION_CONTROL }}-dev
+  version_control: ${{ vars.VERSION_CONTROL }}-dev
+  nexus_username: ${{vars.NEXUS_USER}}
+  nexus_password: ${{secrets.NEXUS_PASSWORD}}
+  conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
+  conn_app_exchange_secret: ${{secrets.CONN_APP_EXCHANGE_CLIENT_SECRET}}
+  conn_app_client_id: ${{vars.CONN_APP_CLIENT_ID}}
+  conn_app_client_secret: ${{secrets.CONN_APP_CLIENT_SECRET}}
+  anypoint_platform_id: ${{vars.ANYPOINT_PLATFORM_CLIENT_ID}}
+  anypoint_platform_secret: ${{secrets.ANYPOINT_PLATFORM_CLIENT_SECRET}}
+  mule_env: ${{vars.MULE_ENV}}
+  anypoint_platform_visualizer_layer: ${{vars.ANYPOINT_PLATFORM_VISUALIZER_LAYER}}
+  runtime_key: ${{secrets.RUNTIME_KEY}}
+  vcores: ${{vars.VCORES}}
+  replicas: ${{vars.REPLICAS}}
+  target: ${{vars.TARGET}}
+  environment: ${{vars.ENVIRONMENT}} 
+  java_version: ${{vars.JAVA_VERSION}}
+  release_channel: ${{vars.RELEASE_CHANNEL}}
+  business_group_id: ${{vars.BUSINESS_GROUP_ID}}
+  mule_version: ${{vars.MULE_VERSION}}
+  clustered: ${{vars.CLUSTERED}}
 jobs:
-  test:
+  build:
+    # needs: test
     runs-on: ubuntu-latest
+    environment: qa
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-      - name: Install Java and Maven
-        uses: actions/setup-java@v1
-        with:
-          java-version: 8
-
-      - name: Increment Variable
-        uses: action-pack/increment@v2
-        with:
-          name: 'VERSION_CONTROL'
-          token: ${{ secrets.GH_LOGIN_TOKEN }}
-
-      - name: Print
-        run: echo "${{ env.VERSION_CONTROL }}"
+    - uses: actions/checkout@v3
+    - name: Set up Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+    - name: Print Version Control
+      run: echo "${{ env.version_control }}"   
+    - name: Upgrade Version
+      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false
+    - name: Publish to Exchange
+      if: steps.bump.outputs.bumped == false
+      run: |
+        mvn deploy -DskipMunitTests --settings .maven/settings.xml \
+        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
+        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"  
+    - name: Increment Variable
+      uses: action-pack/increment@v2
+      with:
+        name: 'VERSION_CONTROL'
+        token: ${{ secrets.GH_LOGIN_TOKEN }}        
