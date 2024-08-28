@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update version in pom.xml (Release only)
-        run: echo ${{ github.event.release.tag_name }}
+        run: echo "here ${{ github.event.release.tag_name }}"
