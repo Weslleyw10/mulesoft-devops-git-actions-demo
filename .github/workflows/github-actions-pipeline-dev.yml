@@ -20,7 +20,7 @@ jobs:
           tag_prefix: "v"
           major_pattern: "BREAKING CHANGE:"
           minor_pattern: "feat:"
-          format: "dev${increment}"
+          format: "v${major}.${minor}.${patch}-prerelease${increment}"
       - name: Print
         run: echo ${{ steps.versioning.outputs.version }}
 
