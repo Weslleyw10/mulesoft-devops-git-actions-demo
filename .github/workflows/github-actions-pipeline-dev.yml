@@ -5,7 +5,6 @@ on: [pull_request, push]
 jobs:
   release:
     name: Release
-    needs: [build]
     if: contains(github.ref, 'tags/v')
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +22,6 @@ jobs:
 
   testRelease:
     name: Test release
-    needs: [build]
     if: contains(github.ref, 'tags/test/v')
     runs-on: ubuntu-latest
     steps:
