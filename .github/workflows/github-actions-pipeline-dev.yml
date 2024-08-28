@@ -20,4 +20,4 @@ jobs:
         uses: mickem/gh-action-bump-maven-version@v1.0.0
       - name: Print
         if: steps.bump.outputs.bumped == false
-        run: echo ${{steps.bump.outputs.bumped}}
+        run: echo {{steps.bump.outputs.bumped}}
