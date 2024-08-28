@@ -74,7 +74,8 @@ jobs:
       run: |
         mvn deploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"   
+        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}" \
+        -Dmule.artifact="teste-teste-dev" \
   deploy:
     needs: build
     runs-on: ubuntu-latest
