@@ -3,10 +3,11 @@ on:
     branches:
       - 'develop'
 jobs:
-  deploy:
+  upgrate-version:
     runs-on: ubuntu-latest
+    environment: qa
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_LOGIN_TOKEN }}
           ref: ${{ github.head_ref }}
@@ -16,6 +17,6 @@ jobs:
           java-version: 11
       - name: Bump version
         id: bump
-      - uses: mickem/gh-action-bump-maven-version@v1.0.0
-        with:
-         bump-command: mvn org.codehaus.mojo:versions-maven-plugin:2.7:set-property -Dproperty=revision -DnewVersion=@NEW_VERSION@"-dev"
+        uses: mickem/gh-action-bump-maven-version@v1.0.0
+      - name: Print
+        run: echo steps.bump.outputs.bumped
