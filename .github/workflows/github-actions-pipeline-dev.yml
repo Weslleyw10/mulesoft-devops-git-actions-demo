@@ -1,39 +1,23 @@
-name: Build
-
-on: [pull_request, push]
+on:
+  push:
+    branches:
+      - 'main'
 
 jobs:
-  release:
-    name: Release
-    if: contains(github.ref, 'tags/v')
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Version
-        id: get_tag
-        run: echo ::set-output name=version::${TAG_REF_NAME##*/}
-        env:
-          TAG_REF_NAME: ${{ github.ref }}
-      - name: Release GitHub Actions
-        uses: technote-space/release-github-actions@v6
+      - uses: actions/checkout@v2
         with:
-          BRANCH_NAME: releases/${MAJOR}
-          CLEAN_TARGETS: '.gitignore,.github,*.lock,*.json'
-          COMMIT_MESSAGE: 'build: release ${{ steps.get_tag.outputs.version }} via ${{ github.sha }}'
-
-  testRelease:
-    name: Test release
-    if: contains(github.ref, 'tags/test/v')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Version
-        id: get_tag
-        run: echo ::set-output name=version::${TAG_REF_NAME##*/}
-        env:
-          TAG_REF_NAME: ${{ github.ref }}
-      - name: Release GitHub Actions
-        uses: technote-space/release-github-actions@v6
+          token: ${{ secrets.GH_LOGIN_TOKEN }}
+          ref: ${{ github.head_ref }}
+      - name: Set up Java
+        uses: actions/setup-java@v1
         with:
-          BRANCH_NAME: releases/${MAJOR}
-          TEST_TAG_PREFIX: test/
-          CLEAN_TARGETS: '.gitignore,.github,*.lock,*.json'
-          COMMIT_MESSAGE: 'build: release ${{ steps.get_tag.outputs.version }} via ${{ github.sha }}'
+          java-version: 11
+      - name: Bump version
+        id: bump
+        uses: mickem/gh-action-bump-maven-version
+      - name: Deploy project
+        if: steps.bump.outputs.bumped == false
+        run: mvn deploy
