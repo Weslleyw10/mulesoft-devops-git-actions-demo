@@ -3,7 +3,8 @@ on:
   push:
     branches:
       - 'develop'
-
+env:
+  VERSION_CONTROL: ${{ vars.VERSION_CONTROL }}-dev
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -22,4 +23,4 @@ jobs:
           token: ${{ secrets.GH_LOGIN_TOKEN }}
 
       - name: Print
-        run: echo "${{ vars.VERSION_CONTROL }}"
+        run: echo "${{ env.VERSION_CONTROL }}"
