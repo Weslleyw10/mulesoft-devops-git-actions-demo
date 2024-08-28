@@ -59,10 +59,10 @@ jobs:
         artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
         mv $artifactName1 $artifactName2    
     - name: Upload artifact 
-        uses: actions/upload-artifact@master
-        with:
-            name: artifacts
-            path: target/*.jar            
+      uses: actions/upload-artifact@master
+      with:
+        name: artifacts
+        path: target/*.jar            
   build:
     needs: test
     runs-on: ubuntu-latest
