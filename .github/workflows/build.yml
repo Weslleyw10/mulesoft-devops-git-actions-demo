@@ -89,7 +89,8 @@ jobs:
       java_version: ${{vars.JAVA_VERSION}}
       release_channel: ${{vars.RELEASE_CHANNEL}}
       business_group_id: ${{vars.BUSINESS_GROUP_ID}}
-      mule_version: ${{vars.MULE_VERSION}}   
+      mule_version: ${{vars.MULE_VERSION}}
+      clustered: ${{vars.CLUSTERED}}
     steps:
     - name: Checkout this repo
       uses: actions/checkout@v4
@@ -119,6 +120,7 @@ jobs:
         -Dch.target="${{ env.target }}" \
         -Dch.environment="${{ env.environment }}" \
         -Dch.business.group.id="${{ env.business_group_id }}" \
-        -Dch.mule.version="${{ env.mule_version }}"
-        -Dch.java.version="${{ env.java_version }}"
-        -Dch.release.channel="${{ env.release_channel }}"
+        -Dch.mule.version="${{ env.mule_version }}" \
+        -Dch.java.version="${{ env.java_version }}" \
+        -Dch.release.channel="${{ env.release_channel }}" \
+        -Dch.clustered="${{ env.clustered }}"

@@ -70,6 +70,8 @@
 						</secureProperties>
 						<deploymentSettings>
 							<generateDefaultPublicUrl>true</generateDefaultPublicUrl>
+							<clustered>${ch.clustered}</clustered>
+							<updateStrategy>rolling</updateStrategy>
 						</deploymentSettings>
 					</cloudhub2Deployment>
 				</configuration>
