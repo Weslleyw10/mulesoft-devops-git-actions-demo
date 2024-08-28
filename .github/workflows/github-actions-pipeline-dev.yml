@@ -1,9 +1,9 @@
 name: Test, Build and Deploy to non-prod environment
 on:
   push:
-    branches: [ qa ]
+    branches: [ develop ]
   pull_request:
-    branches: [ qa ]    
+    branches: [ develop ]    
   workflow_dispatch:
 env:
   nexus_username: ${{vars.NEXUS_USER}}
