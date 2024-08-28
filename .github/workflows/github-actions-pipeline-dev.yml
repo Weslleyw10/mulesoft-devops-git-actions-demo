@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ develop ]
 env:
-  version_control: ${{ vars.VERSION_CONTROL }}-dev
+  version_control: ${{ vars.VERSION_CONTROL_QA }}-dev
   nexus_username: ${{vars.NEXUS_USER}}
   nexus_password: ${{secrets.NEXUS_PASSWORD}}
   conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
@@ -61,7 +61,7 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v1
       with:
-        java-version: 11  
+        java-version: 8
     - name: Upgrade Version
       run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false
     - name: Print Version Control
@@ -74,7 +74,7 @@ jobs:
     - name: Increment Variable
       uses: action-pack/increment@v2
       with:
-        name: 'VERSION_CONTROL'
+        name: 'VERSION_CONTROL_QA'
         token: ${{ secrets.GH_LOGIN_TOKEN }} 
   deploy:
     needs: build
@@ -95,7 +95,6 @@ jobs:
         distribution: "zulu"
         java-version: 8
     - name: Deploy to CloudHub 2.0
-      if: steps.bump.outputs.bumped == false
       run: |
         mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
         -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
