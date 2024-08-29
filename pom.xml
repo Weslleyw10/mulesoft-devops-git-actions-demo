@@ -40,7 +40,8 @@
 					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com </uri>
 						<provider>MC</provider>
-						<businessGroupId>${ch.business.group.id}</businessGroupId>
+<!-- 						<businessGroupId>${ch.business.group.id}</businessGroupId> -->
+						<businessGroup>${ch.business.group}</businessGroup>
 						<environment>${ch.environment}</environment>
 						<target>${ch.target}</target>
 						<muleVersion>${ch.mule.version}</muleVersion>
