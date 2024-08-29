@@ -1,9 +1,9 @@
 name: Test, Build And Deploy to PRD
 on:
   push:
-    branches: [ test ]
+    branches: [ release ]
   pull_request:
-    branches: [ test ]
+    branches: [ release ]
 env:
   version_control: ${{ vars.VERSION_CONTROL_PRD }}
   nexus_username: ${{vars.NEXUS_USER}}
@@ -40,6 +40,27 @@ jobs:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-maven-          
+          ${{ runner.os }}-maven-
+    - name: Upgrade Version
+      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false       
+    - name: Print Business Group
+      run:  echo "${{ env.business_group }}"      
     - name: Deploy to CloudHub 2.0
-      run: echo "${{ env.business_group }}"
+      run: |
+        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
+        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
+        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}" \
+        -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
+        -Dprop.anypoint.platform.client_secret="${{ env.anypoint_platform_secret }}" \
+        -Dprop.anypoint.platform.visualizer.layer="${{ env.anypoint_platform_visualizer_layer }}" \
+        -Dprop.mule.env="${{ env.mule_env }}" \
+        -Dprop.runtime.key="${{ env.runtime_key }}" \
+        -Dch.vcores="${{ env.vcores }}" \
+        -Dch.replicas="${{ env.replicas }}" \
+        -Dch.target="${{ env.target }}" \
+        -Dch.environment="${{ env.environment }}" \
+        -Dch.business.group="${{ env.business_group }}" \
+        -Dch.mule.version="${{ env.mule_version }}" \
+        -Dch.java.version="${{ env.java_version }}" \
+        -Dch.release.channel="${{ env.release_channel }}" \
+        -Dch.clustered="${{ env.clustered }}"
