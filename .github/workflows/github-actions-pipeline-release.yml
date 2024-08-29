@@ -24,6 +24,7 @@ env:
   java_version: ${{vars.JAVA_VERSION}}
   release_channel: ${{vars.RELEASE_CHANNEL}}
   business_group_id: ${{vars.BUSINESS_GROUP_ID}}
+  business_group: '"Caldic\Core"'
   mule_version: ${{vars.MULE_VERSION}}
   clustered: ${{vars.CLUSTERED}}
 jobs:
@@ -108,7 +109,7 @@ jobs:
         -Dch.replicas="${{ env.replicas }}" \
         -Dch.target="${{ env.target }}" \
         -Dch.environment="${{ env.environment }}" \
-        -Dch.business.group.id="${{ env.business_group_id }}" \
+        -Dch.business.group="${{ env.business_group }}" \
         -Dch.mule.version="${{ env.mule_version }}" \
         -Dch.java.version="${{ env.java_version }}" \
         -Dch.release.channel="${{ env.release_channel }}" \
