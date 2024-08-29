@@ -64,3 +64,4 @@ jobs:
         -Dch.java.version="${{ env.java_version }}" \
         -Dch.release.channel="${{ env.release_channel }}" \
         -Dch.clustered="${{ env.clustered }}"
+
