@@ -24,7 +24,7 @@ env:
   java_version: ${{vars.JAVA_VERSION}}
   release_channel: ${{vars.RELEASE_CHANNEL}}
   business_group_id: ${{vars.BUSINESS_GROUP_ID}}
-  business_group: '"Caldic\Core"'
+  business_group: ${{vars.BUSINESS_GROUP}}
   mule_version: ${{vars.MULE_VERSION}}
   clustered: ${{vars.CLUSTERED}}
 jobs:
