@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ develop ]
 env:
-  version_control: ${{ vars.VERSION_CONTROL_QA }}-dev
+  version_control: ${{ vars.VERSION_CONTROL_QA }}
   nexus_username: ${{vars.NEXUS_USER}}
   nexus_password: ${{secrets.NEXUS_PASSWORD}}
   conn_app_exchange_id: ${{vars.CONN_APP_EXCHANGE_CLIENT_ID}}
@@ -24,6 +24,7 @@ env:
   java_version: ${{vars.JAVA_VERSION}}
   release_channel: ${{vars.RELEASE_CHANNEL}}
   business_group_id: ${{vars.BUSINESS_GROUP_ID}}
+  business_group: ${{vars.BUSINESS_GROUP}}
   mule_version: ${{vars.MULE_VERSION}}
   clustered: ${{vars.CLUSTERED}}
 jobs:
@@ -108,7 +109,7 @@ jobs:
         -Dch.replicas="${{ env.replicas }}" \
         -Dch.target="${{ env.target }}" \
         -Dch.environment="${{ env.environment }}" \
-        -Dch.business.group.id="${{ env.business_group_id }}" \
+        -Dch.business.group="${{ env.business_group }}" \
         -Dch.mule.version="${{ env.mule_version }}" \
         -Dch.java.version="${{ env.java_version }}" \
         -Dch.release.channel="${{ env.release_channel }}" \
