@@ -1,9 +1,9 @@
 name: Test, Build And Deploy to PRD
 on:
   push:
-    branches: [ release ]
+    branches: [ test ]
   pull_request:
-    branches: [ release ]
+    branches: [ test ]
 env:
   version_control: ${{ vars.VERSION_CONTROL_PRD }}
   nexus_username: ${{vars.NEXUS_USER}}
@@ -27,58 +27,7 @@ env:
   business_group: ${{vars.BUSINESS_GROUP}}
   mule_version: ${{vars.MULE_VERSION}}
   clustered: ${{vars.CLUSTERED}}
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    environment: prd   
-    steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v3
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: 8
-    - name: Test with Maven
-      run: mvn test --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
-    - name: Upload MUnit reports
-      uses: actions/upload-artifact@v3
-      with:
-        name: munit-test-reports
-        path: target/site/munit/coverage/           
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    environment: prd
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 8
-    - name: Upgrade Version
-      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false
-    - name: Print Version Control
-      run: echo "${{ env.version_control }}" 
-    - name: Publish to Exchange
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy -DskipMunitTests --settings .maven/settings.xml \
-        -Dmule.artifact=$artifactName \
-        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"  
-    - name: Increment Variable
-      uses: action-pack/increment@v2
-      with:
-        name: 'VERSION_CONTROL_PRD'
-        token: ${{ secrets.GH_LOGIN_TOKEN }} 
+jobs:       
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -96,21 +45,4 @@ jobs:
     - name: Upgrade Version
       run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false             
     - name: Deploy to CloudHub 2.0
-      run: |
-        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
-        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}" \
-        -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
-        -Dprop.anypoint.platform.client_secret="${{ env.anypoint_platform_secret }}" \
-        -Dprop.anypoint.platform.visualizer.layer="${{ env.anypoint_platform_visualizer_layer }}" \
-        -Dprop.mule.env="${{ env.mule_env }}" \
-        -Dprop.runtime.key="${{ env.runtime_key }}" \
-        -Dch.vcores="${{ env.vcores }}" \
-        -Dch.replicas="${{ env.replicas }}" \
-        -Dch.target="${{ env.target }}" \
-        -Dch.environment="${{ env.environment }}" \
-        -Dch.business.group="${{ env.business_group }}" \
-        -Dch.mule.version="${{ env.mule_version }}" \
-        -Dch.java.version="${{ env.java_version }}" \
-        -Dch.release.channel="${{ env.release_channel }}" \
-        -Dch.clustered="${{ env.clustered }}"
+      run: echo "${{ env.business_group }}"
