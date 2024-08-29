@@ -1,25 +1,11 @@
-name: Test, Build And Deploy to Test
-on:
-  push:
-    branches: [ test ]
-  pull_request:
-    branches: [ test ]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Simulate a Build
-        run: echo 'hello build'
-      - name: Create an issue
-        uses: JasonEtco/create-an-issue@v2.6.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ENVIRONMENT: Dev
-          RUNNUMBER: ${{ github.run_number  }}
-        with:         
-          filename: .github/deployment-approval.md
 
+name: Deploy
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:  
   parse:
     if: ${{ !github.event.issue.pull_request && github.event.comment.body == 'Approved' }}
     runs-on: ubuntu-latest
@@ -40,10 +26,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           issue_id: ${{ github.event.issue.number }}         
           payload_marker: target_payload 
+  
   deploy-dev:
     needs: [parse]
     if: ${{ needs.parse.outputs.deploy-environment == 'Dev' }}
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v2
                
@@ -99,3 +87,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           comment: 'Deployment Completed 🌟'
+    
+    
+    
+    
+    
+    
