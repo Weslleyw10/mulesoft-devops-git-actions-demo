@@ -4,6 +4,7 @@ on:
     types: [created]
 jobs:  
   parse:
+    if: ${{ github.event.comment.body == 'Approved' }}
     runs-on: ubuntu-latest
     outputs:
       deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
@@ -28,44 +29,12 @@ jobs:
     if: ${{ needs.parse.outputs.deploy-environment == 'test' }}
     runs-on: ubuntu-latest    
     steps:
-      - uses: actions/checkout@v2               
-      - name: Download workflow artifact
-        uses: dawidd6/action-download-artifact@v2.15.0
-        with:
-          workflow: build.yml
-          repo: n3wt0n/DeploymentApprovals
-          run_number: ${{ needs.parse.outputs.ci-run-number }}
-          name: your-artifact-name
-          path: ${{ github.workspace }}          
+      - uses: actions/checkout@v2                       
       - name: Deploy to DEV
         run: echo Simulating Deployment              
-      - uses: JasonEtco/create-an-issue@v2
-        name: Create approval Issue for Prod
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_LOGIN_TOKEN }}
-          ENVIRONMENT: prd
-          RUNNUMBER: ${{ needs.parse.outputs.ci-run-number }}
-        with:
-          filename: .github/deployment-approval.md    
-          
-  deploy-prod:
-    needs: [parse]
-    if: ${{ needs.parse.outputs.deploy-environment == 'prd' }}
-    runs-on: ubuntu-latest    
-    steps:          
-      - name: Download workflow artifact
-        uses: dawidd6/action-download-artifact@v2.15.0
-        with:
-          workflow: build.yml
-          repo: n3wt0n/DeploymentApprovals
-          run_number: ${{ needs.parse.outputs.ci-run-number }}
-          name: your-artifact-name
-          path: ${{ github.workspace }}          
-      - name: Deploy to PROD
-        run: echo Simulating Deployment 
-        
+                 
   close-issue:
-    needs: [deploy-dev, deploy-prod]
+    needs: [deploy-dev]
     if: ${{ always() }}
     runs-on: ubuntu-latest      
     steps:
