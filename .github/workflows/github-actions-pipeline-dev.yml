@@ -47,70 +47,9 @@ jobs:
         distribution: 'zulu'
         java-version: 8
     - name: Test with Maven
-      run: mvn test --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
+      run: mvn -version --settings .maven/settings.xml -Druntime.key="${{ env.runtime_key }}"
     - name: Upload MUnit reports
       uses: actions/upload-artifact@v3
       with:
         name: munit-test-reports
-        path: target/site/munit/coverage/           
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    environment: qa
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 8
-    - name: Upgrade Version
-      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false
-    - name: Print Version Control
-      run: echo "${{ env.version_control }}" 
-    - name: Publish to Exchange
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy -DskipMunitTests --settings .maven/settings.xml \
-        -Dmule.artifact=$artifactName \
-        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}"  
-    - name: Increment Variable
-      uses: action-pack/increment@v2
-      with:
-        name: 'VERSION_CONTROL_QA'
-        token: ${{ secrets.GH_LOGIN_TOKEN }} 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: qa
-    steps:
-    - name: Checkout this repo
-      uses: actions/checkout@v4
-    - name: Cache dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Upgrade Version
-      run: mvn versions:set -DnewVersion="${{ env.version_control }}" -DgenerateBackupPoms=false             
-    - name: Deploy to CloudHub 2.0
-      run: |
-        mvn deploy -DmuleDeploy -DskipMunitTests --settings .maven/settings.xml \
-        -Dconnected.app.client.id="${{ env.conn_app_client_id }}" \
-        -Dconnected.app.client.secret="${{ env.conn_app_client_secret }}" \
-        -Dprop.anypoint.platform.client_id="${{ env.anypoint_platform_id }}" \
-        -Dprop.anypoint.platform.client_secret="${{ env.anypoint_platform_secret }}" \
-        -Dprop.anypoint.platform.visualizer.layer="${{ env.anypoint_platform_visualizer_layer }}" \
-        -Dprop.mule.env="${{ env.mule_env }}" \
-        -Dprop.runtime.key="${{ env.runtime_key }}" \
-        -Dch.vcores="${{ env.vcores }}" \
-        -Dch.replicas="${{ env.replicas }}" \
-        -Dch.target="${{ env.target }}" \
-        -Dch.environment="${{ env.environment }}" \
-        -Dch.business.group="${{ env.business_group }}" \
-        -Dch.mule.version="${{ env.mule_version }}" \
-        -Dch.java.version="${{ env.java_version }}" \
-        -Dch.release.channel="${{ env.release_channel }}" \
-        -Dch.clustered="${{ env.clustered }}"
+        path: target/site/munit/coverage/
