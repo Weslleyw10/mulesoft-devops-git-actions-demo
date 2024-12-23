@@ -110,6 +110,7 @@ jobs:
         -Dch.target="${{ env.target }}" \
         -Dch.environment="${{ env.environment }}" \
         -Dch.business.group="${{ env.business_group }}" \
+        
         -Dch.mule.version="${{ env.mule_version }}" \
         -Dch.java.version="${{ env.java_version }}" \
         -Dch.release.channel="${{ env.release_channel }}" \
