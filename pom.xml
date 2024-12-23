@@ -6,6 +6,7 @@
 	<packaging>mule-application</packaging>
 	<name>mulesoft-deveops-git-actions-demo</name>
 	<version>1.0.0</version>
+	
 	<properties>
 		<type>app</type>
 		<tags/>
